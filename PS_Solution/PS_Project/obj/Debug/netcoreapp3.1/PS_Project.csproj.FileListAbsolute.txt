@@ -12,3 +12,17 @@ C:\Users\Admin\Documents\GitHub\CSharp_PS\PS_Solution\PS_Project\obj\Debug\netco
 C:\Users\Admin\Documents\GitHub\CSharp_PS\PS_Solution\PS_Project\obj\Debug\netcoreapp3.1\PS_Project.dll
 C:\Users\Admin\Documents\GitHub\CSharp_PS\PS_Solution\PS_Project\obj\Debug\netcoreapp3.1\PS_Project.pdb
 C:\Users\Admin\Documents\GitHub\CSharp_PS\PS_Solution\PS_Project\obj\Debug\netcoreapp3.1\PS_Project.genruntimeconfig.cache
+C:\Users\Admin\Documents\GitHub\CSharpPSStudy\PS_Solution\PS_Project\bin\Debug\netcoreapp3.1\PS_Project.exe
+C:\Users\Admin\Documents\GitHub\CSharpPSStudy\PS_Solution\PS_Project\bin\Debug\netcoreapp3.1\PS_Project.deps.json
+C:\Users\Admin\Documents\GitHub\CSharpPSStudy\PS_Solution\PS_Project\bin\Debug\netcoreapp3.1\PS_Project.runtimeconfig.json
+C:\Users\Admin\Documents\GitHub\CSharpPSStudy\PS_Solution\PS_Project\bin\Debug\netcoreapp3.1\PS_Project.runtimeconfig.dev.json
+C:\Users\Admin\Documents\GitHub\CSharpPSStudy\PS_Solution\PS_Project\bin\Debug\netcoreapp3.1\PS_Project.dll
+C:\Users\Admin\Documents\GitHub\CSharpPSStudy\PS_Solution\PS_Project\bin\Debug\netcoreapp3.1\PS_Project.pdb
+C:\Users\Admin\Documents\GitHub\CSharpPSStudy\PS_Solution\PS_Project\obj\Debug\netcoreapp3.1\PS_Project.csproj.AssemblyReference.cache
+C:\Users\Admin\Documents\GitHub\CSharpPSStudy\PS_Solution\PS_Project\obj\Debug\netcoreapp3.1\PS_Project.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Admin\Documents\GitHub\CSharpPSStudy\PS_Solution\PS_Project\obj\Debug\netcoreapp3.1\PS_Project.AssemblyInfoInputs.cache
+C:\Users\Admin\Documents\GitHub\CSharpPSStudy\PS_Solution\PS_Project\obj\Debug\netcoreapp3.1\PS_Project.AssemblyInfo.cs
+C:\Users\Admin\Documents\GitHub\CSharpPSStudy\PS_Solution\PS_Project\obj\Debug\netcoreapp3.1\PS_Project.csproj.CoreCompileInputs.cache
+C:\Users\Admin\Documents\GitHub\CSharpPSStudy\PS_Solution\PS_Project\obj\Debug\netcoreapp3.1\PS_Project.dll
+C:\Users\Admin\Documents\GitHub\CSharpPSStudy\PS_Solution\PS_Project\obj\Debug\netcoreapp3.1\PS_Project.pdb
+C:\Users\Admin\Documents\GitHub\CSharpPSStudy\PS_Solution\PS_Project\obj\Debug\netcoreapp3.1\PS_Project.genruntimeconfig.cache

@@ -13,11 +13,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Admin\\Documents\\GitHub\\CSharp_PS\\PS_Solution\\PS_Project\\PS_Project.csproj",
+      "projectUniqueName": "C:\\Users\\Admin\\Documents\\GitHub\\CSharpPSStudy\\PS_Solution\\PS_Project\\PS_Project.csproj",
       "projectName": "PS_Project",
-      "projectPath": "C:\\Users\\Admin\\Documents\\GitHub\\CSharp_PS\\PS_Solution\\PS_Project\\PS_Project.csproj",
+      "projectPath": "C:\\Users\\Admin\\Documents\\GitHub\\CSharpPSStudy\\PS_Solution\\PS_Project\\PS_Project.csproj",
       "packagesPath": "C:\\Users\\Admin\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Admin\\Documents\\GitHub\\CSharp_PS\\PS_Solution\\PS_Project\\obj\\",
+      "outputPath": "C:\\Users\\Admin\\Documents\\GitHub\\CSharpPSStudy\\PS_Solution\\PS_Project\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\Admin\\AppData\\Roaming\\NuGet\\NuGet.Config",
