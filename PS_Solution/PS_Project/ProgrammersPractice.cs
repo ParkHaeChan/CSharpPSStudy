@@ -88,6 +88,16 @@ namespace PS_Project
             Console.WriteLine("정지 처리된 id: " + string.Join(", ", 조건처리.Select(a => a.Key).ToList()));
             // SelectMany: 각 원소가 컬랙션일 때 펴서 하나의 리스트로 만들어 줌(flatten)
             var ls = 조건처리.SelectMany(sm => sm.Select(s => s[0]/* 위 그룹화 상태 참고: 0이면 신고자 id */)).ToList();
+
+            // SelectMany를 안쓰면? : 직접 flatten을 해주면 된다.
+            var temp = 조건처리.Select(so => so.Select(s => s[0]).ToList()).ToList();
+            // flatten
+            var flattenList = new List<string>();
+            foreach (var list in temp)
+                foreach (var e in list)
+                    flattenList.Add(e);
+
+            ls = flattenList;
             Console.WriteLine("처리 결과 메일 받을 사람(신고 한 사람중 정지 여럿 있으면 메일 여러번 받기 가능하므로 중복 가능): " + string.Join(", ", ls));
 
             // id_list 순서로 ls의 원소와 같은지에 대한 갯수를 적용
