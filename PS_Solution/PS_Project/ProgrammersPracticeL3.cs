@@ -97,81 +97,55 @@ namespace PS_Project
          *  앞쪽을 저장할 때는 stack 자료 구조를 사용한다.
          *  실패
          *  
+         *  시도7) 
+         *  해설을 참고했다.
+         *  110을 찾는것 보다는 원본 문자열을 1개씩 읽어들이다 마지막 3개가 110이면 이를 삭제하고
+         *  이어서 계속 진행하면 된다. 삭제된 횟수를 세었다가 다시 110을 삽입해주면 된다.
+         *  시간 초과 발생
          *  
+         *  시도 8)
+         *  C# string은 수정이 불가능하여 약간만 수정하려해도 새로 할당해버리기 때문에 속도가 느린 것으로 판단.
+         *  string builder를 사용하도록 수정하여본다.
+         *  -string builder를 사용하여도 시간초과가 발생하는 곳이 존재함
+         *      -ToString을 전체적으로 사용하면 느린것 같다. 구간을 정해서 사용하도록 수정하였을 때 66.7점으로 향상
+         *      -마지막에 110 다시 넣을 때 stringbuilder의 insert로 하도록 수정 후 통과
+         *      
+         *  숙지할 점: C#에서 string을 자주 수정할 경우 stringbuilder를 사용해야하며, 수정 시 반드시 stringbuilder의 메서드를 사용할 것
         */
 
         public string[] solution(string[] s)
         {
             List<string> answer = new List<string>();
-            Stack<string> parts = new Stack<string>();
 
             foreach(var bin_ary in s)
             {
-                int cnt110 = 0; // 추출한 110 갯수
-                string binStr = bin_ary;
-
-                int idx110 = binStr.IndexOf("110");
-                parts.Clear();
+                int idx110 = bin_ary.IndexOf("110");
 
                 // 110 없으면 바꿀게 없으므로 더 볼 필요 없음
                 if (idx110 == -1)
                 {
-                    answer.Add(binStr);
+                    answer.Add(bin_ary);
                     continue;
                 }
 
                 // 추출 진행
-                cnt110++;
-
-                var frontStr = binStr.Substring(0, idx110);
-                var leftStr = idx110 + 3 >= binStr.Length ? "" : binStr.Substring(idx110 + 3);
-
-                // 추출 후 앞 뒤 부분 문자열
-                parts.Push(frontStr);
-                parts.Push(leftStr);
-
-                // stack에 넣고 재접합시 110 처리하며 반복
-                while (parts.Count >= 2)
+                int cnt110 = 0; // 추출한 110 갯수
+                // 문자열 수정이 빈번하므로 string builder 사용
+                StringBuilder binStr = new StringBuilder("", bin_ary.Length);
+                for(int i=0; i<bin_ary.Length; ++i)
                 {
-                    leftStr = parts.Pop();
-                    frontStr = parts.Pop();
-
-                    // 접합부에서 110이 발생 가능한 경우
-                    if (frontStr.EndsWith("1") && leftStr.StartsWith("10"))
+                    binStr.Append(bin_ary[i]);
+                    if(binStr.Length >= 3 && binStr.ToString(binStr.Length-3, 3) == "110")
                     {
                         cnt110++;
-                        parts.Push(frontStr.Substring(0, frontStr.Length - 1));
-                        parts.Push(leftStr.Substring(2));
-                    }
-                    else if (frontStr.EndsWith("11") && leftStr.StartsWith("0"))
-                    {
-                        cnt110++;
-                        parts.Push(frontStr.Substring(0, frontStr.Length - 2));
-                        parts.Push(leftStr.Substring(1));
-                    }
-                    else
-                    {   // 뒤쪽에서 110 나오는지 확인하여 그 부분으로 분리
-                        idx110 = leftStr.IndexOf("110");
-                        if (idx110 != -1)
-                        {
-                            var leftfrontStr = leftStr.Substring(0, idx110);
-                            var leftbackStr = idx110 + 3 >= leftStr.Length ? "" : leftStr.Substring(idx110 + 3);
-
-                            frontStr = frontStr + leftfrontStr;
-                            leftStr = leftbackStr;
-
-                            parts.Push(frontStr);
-                            parts.Push(leftStr);
-                        }
-                        else
-                            binStr = frontStr + leftStr;
+                        binStr.Remove(binStr.Length-3, 3);
                     }
                 }
 
                 // 추출한 110 이어 붙이기
-                var middleStr = "";
+                StringBuilder middleStr = new StringBuilder("", cnt110 * 3);
                 for (int i = 0; i < cnt110; ++i)
-                    middleStr += "110";
+                    middleStr.Append("110");
 
                 // 맨 끝에 0 찾기
                 int pos = -1;
@@ -185,13 +159,13 @@ namespace PS_Project
                 if (pos != -1)
                 {
                     // 끝0 뒤에 110 적용
-                    frontStr = binStr.Substring(0, pos+1);
-                    leftStr = binStr.Substring(pos + 1);
-                    answer.Add(frontStr + middleStr + leftStr);
+                    binStr.Insert(pos+1, middleStr);
+                    answer.Add(binStr.ToString());
                 }
                 else
                 {   // 1로만 구성되어 있으므로 맨 앞에 적용
-                    answer.Add(middleStr + binStr);
+                    middleStr.Append(binStr);
+                    answer.Add(middleStr.ToString());
                 }
             }
 
