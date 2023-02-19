@@ -1,8 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "220xZe9KfbPAqf59I1LyCZe2/Oqj6mzhQY/lDV9wG5rTDCG67VrXIhSFdcEkqN8Zdd2abpfwBszCGU+gItCtqw==",
+  "dgSpecHash": "ETDpynxR9wjlgqLMARQUytmw2cQSd+FRNrHSzaT1Tj1b0AaXBcW/UR2sL+P7rUMCgKHzqN04zquOZEuTCuBNuQ==",
   "success": true,
   "projectFilePath": "C:\\Users\\Admin\\Documents\\GitHub\\CSharpPSStudy\\PS_Solution\\PS_Project\\PS_Project.csproj",
-  "expectedPackageFiles": [],
+  "expectedPackageFiles": [
+    "C:\\Users\\Admin\\.nuget\\packages\\nito.collections.deque\\1.1.1\\nito.collections.deque.1.1.1.nupkg.sha512"
+  ],
   "logs": []
 }

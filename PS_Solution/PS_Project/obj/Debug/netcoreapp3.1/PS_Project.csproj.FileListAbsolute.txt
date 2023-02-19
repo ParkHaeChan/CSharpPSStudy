@@ -26,3 +26,5 @@ C:\Users\Admin\Documents\GitHub\CSharpPSStudy\PS_Solution\PS_Project\obj\Debug\n
 C:\Users\Admin\Documents\GitHub\CSharpPSStudy\PS_Solution\PS_Project\obj\Debug\netcoreapp3.1\PS_Project.dll
 C:\Users\Admin\Documents\GitHub\CSharpPSStudy\PS_Solution\PS_Project\obj\Debug\netcoreapp3.1\PS_Project.pdb
 C:\Users\Admin\Documents\GitHub\CSharpPSStudy\PS_Solution\PS_Project\obj\Debug\netcoreapp3.1\PS_Project.genruntimeconfig.cache
+C:\Users\Admin\Documents\GitHub\CSharpPSStudy\PS_Solution\PS_Project\bin\Debug\netcoreapp3.1\Nito.Collections.Deque.dll
+C:\Users\Admin\Documents\GitHub\CSharpPSStudy\PS_Solution\PS_Project\obj\Debug\netcoreapp3.1\PS_Project.csproj.CopyComplete

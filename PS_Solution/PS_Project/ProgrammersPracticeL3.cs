@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Nito.Collections;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace PS_Project
@@ -172,9 +174,48 @@ namespace PS_Project
             return answer.ToArray();
         }
 
+        public string[] solution2(string[] s)
+        {
+            // string builder를 사용하지 않는 다른 방식으로는 string의 원소를 stack이나 queue에 넣어서 작성하는 것이다
+            // queue를 사용할 경우 뒤에서 삭제를 할 수 있어야 하므로 double ended queue가 필요한데 C#에서는 따로 없음(외부 패키지 사용: Nito.Collections)
+            for (int i = 0; i < s.Length; i++)
+            {
+                int n = 0;
+                //Stack<char> stack = new Stack<char>();
+                Deque<char> deq = new Deque<char>();
+
+                for (int j = 0; j < s[i].Length; j++)
+                {
+                    //stack.Push(s[i][j]);
+                    deq.AddToBack(s[i][j]);
+                    // Skip(): Linq 확장으로 앞쪽을 인자 수 만큼 없엔 상태의 자료구조 상태를 반환한다.
+                    // SkipLast(): skip의 반대로 뒤에서 인자 수 만큼 없엔 상태의 자료구조 상태를 반환한다.
+                    /*if (stack.Count >= 3 && stack.Peek() == '0' && stack.Skip(1).First() == '1' && stack.Skip(2).First() == '1')
+                    {
+                        stack.Pop(); stack.Pop(); stack.Pop();
+                        n++;
+                    }
+                    */
+                    if (deq.Count >= 3 && deq.Last() == '0' && deq.SkipLast(1).Last() == '1' && deq.SkipLast(2).Last() == '1')
+                    {
+                        deq.RemoveFromBack(); deq.RemoveFromBack(); deq.RemoveFromBack();
+                        n++;
+                    }
+                }
+
+                // s[i] = string.Join("", stack.Reverse());
+                s[i] = string.Join("", deq);
+                int idx = s[i].Length - 1; //   뒤에서 부터 1이 안나오는 순간을 찾기 (== 뒤에서 최소 0 발견한 곳 찾기)
+                while (idx >= 0 && s[i][idx] == '1') idx--;
+                // 110 * cnt개 한줄로 생성하기: string.Concat(Enumerable.Repeat("110", n)
+                s[i] = s[i].Substring(0, idx + 1) + string.Concat(Enumerable.Repeat("110", n)) + s[i].Substring(idx + 1, s[i].Length - idx - 1);
+            }
+            return s;
+        }
+
         public override void Run()
         {
-            var answer = solution(s);
+            var answer = solution2(s);
             Console.WriteLine(string.Join(", ", answer));
         }
     }
