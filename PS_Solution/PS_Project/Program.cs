@@ -35,7 +35,7 @@ namespace PS_Project
 
     class Program
     {
-        const int TESTINDEX = 2;    // 0번: HelloWorld 출력 테스트
+        const int TESTINDEX = 4;    // 0번: HelloWorld 출력 테스트
         const int TESTCOUNT = 1000;
 
         static void Main(string[] args)
