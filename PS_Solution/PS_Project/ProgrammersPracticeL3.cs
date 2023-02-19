@@ -60,34 +60,108 @@ namespace PS_Project
          *  남은 숫자에서 맨뒤에 나오는 0의 위치에 추출한 110을 연달아 써준다.
          *  0이 없을 경우 맨 앞에 추출한 110을 써주고 나머지를 써준다.
          * 
+         *  결과 : 시간 초과 발생
+         *  
+         *  시도2)
+         *  시간 초과가 발생하여 약간의 최적화를 적용해본다.
+         *  110을 추출했을 때 다시 문자열의 처음으로 돌아가지 않고
+         *  바로 앞의 인덱스에서 시작하도록 수정 110을 추출 했을 때 다음 경우를 생각해볼 수 있다.
+         *  
+         *  추출한 앞쪽이 00인 경우 -> 뒤에서만 더 찾아보면 된다
+         *  추출한 앞쪽이 01인 경우 -> 앞에 1을 찾았다 치고 더 찾아 보면 된다.
+         *  추출한 앞쪽이 10인 경우 -> 뒤에서만 더 찾아보면 된다
+         *  추출한 앞쪽이 11인 경우 -> 앞에 11을 찾았다 치고 더 찾아 보면 된다.
+         *  (110을 만들 수 있는지만 알면 되므로 앞을 더 볼 필요는 없음)
+         *  
+         *  시간 초과 발생
+         *  
+         *  시도3) C# indexOf 메서드 사용
+         *  시간 초과 발생
+         *  
+         *  시도4) 
+         *  result 만드는 부분 최적화
+         *  
+         *  시도5)
+         *  110 추출 후 바로 이어붙인 새로운 문자열을 만드는데 시간이 오래 걸릴 것이므로 이부분을 더 최적화
+         *  이어 붙이는 부분에서 110이 생길 수 있으므로 검사가 필요하다.
+         *  110 추출한 인덱스가 i이면
+         *  i-1이 1이면 뒷 문자열이 10으로 시작하는지 확인후 그 뒤에만 확인하고,
+         *  i-1, i-2가 모두 1이면 뒷 문자열이 0으로 시작하는지 확인후 그 뒤에만 확인하면 된다.
+         *  둘 다 아니면 합친 부위에서 110이 나올 확률은 없으므로 뒷 문자열 부터 다시 110을 찾는다.
+         *  다시 합친 상태에서 index를 찾으면 느리므로 앞쪽부분은 모아두었다가 한번에 합친다.
+         *  전체 오답
+         *  
+         *  시도6)
+         *  앞쪽을 모았다가 한번에 합치는 것이 아닌 뒤쪽에서 110을 못찾은 경우 바로 직전의 앞쪽과 합칠 때 110이 생길 수 있는지를 체크한다.
+         *  직전의 앞쪽을 불러와서 합쳐서 110 체크를 다시 해야하므로
+         *  앞쪽을 저장할 때는 stack 자료 구조를 사용한다.
         */
 
         public string[] solution(string[] s)
         {
             List<string> answer = new List<string>();
+            Stack<string> parts = new Stack<string>();
 
             foreach(var bin_ary in s)
             {
-                // 110을 추출
-                int cnt110 = 0;
+                int cnt110 = 0; // 추출한 110 갯수
                 string binStr = bin_ary;
-                while(binStr.Contains("110"))
+
+                int idx110 = binStr.IndexOf("110");
+                parts.Clear();
+
+                // 110 없으면 바꿀게 없으므로 더 볼 필요 없음
+                if (idx110 == -1)
                 {
-                    for(int i=0; i<binStr.Length-2; ++i)
+                    answer.Add(binStr);
+                    continue;
+                }
+
+                // 추출 진행
+                cnt110++;
+
+                var frontStr = binStr.Substring(0, idx110);
+                var leftStr = idx110 + 3 >= binStr.Length ? "" : binStr.Substring(idx110 + 3);
+
+                // 추출 후 앞 뒤 부분 문자열
+                parts.Push(frontStr);
+                parts.Push(leftStr);
+
+                // stack에 넣고 재접합시 110 처리하며 반복
+                while (parts.Count >= 2)
+                {
+                    leftStr = parts.Pop();
+                    frontStr = parts.Pop();
+
+                    // 접합부에서 110이 발생 가능한 경우
+                    if (frontStr.EndsWith("1") && leftStr.StartsWith("10"))
                     {
-                        if(binStr[i] == '1')
+                        cnt110++;
+                        parts.Push(frontStr.Substring(0, frontStr.Length - 1));
+                        parts.Push(leftStr.Substring(2));
+                    }
+                    else if (frontStr.EndsWith("11") && leftStr.StartsWith("0"))
+                    {
+                        cnt110++;
+                        parts.Push(frontStr.Substring(0, frontStr.Length - 2));
+                        parts.Push(leftStr.Substring(1));
+                    }
+                    else
+                    {   // 뒤쪽에서 110 나오는지 확인하여 그 부분으로 분리
+                        idx110 = leftStr.IndexOf("110");
+                        if (idx110 != -1)
                         {
-                            if(binStr[i+1] == '1')
-                            {
-                                if(binStr[i+2] == '0')
-                                {
-                                    var frontStr = binStr.Substring(0, i);
-                                    var leftStr = i + 3 >= binStr.Length ? "": binStr.Substring(i + 3);
-                                    binStr = frontStr + leftStr;
-                                    cnt110++;
-                                }
-                            }
+                            var leftfrontStr = leftStr.Substring(0, idx110);
+                            var leftbackStr = idx110 + 3 >= leftStr.Length ? "" : leftStr.Substring(idx110 + 3);
+
+                            frontStr = frontStr + leftfrontStr;
+                            leftStr = leftbackStr;
+
+                            parts.Push(frontStr);
+                            parts.Push(leftStr);
                         }
+                        else
+                            binStr = frontStr + leftStr;
                     }
                 }
 
@@ -96,23 +170,24 @@ namespace PS_Project
                 for (int i = 0; i < cnt110; ++i)
                     middleStr += "110";
 
-                // 나머지에서 0이 있으면
-                if (binStr.Contains("0"))
-                {   // 맨 끝에 0 찾기
-                    int pos = -1;
-                    for(int i=0; i<binStr.Length; ++i)
-                    {
-                        if(binStr[i] == '0')
-                            pos = i;
-                    }
+                // 맨 끝에 0 찾기
+                int pos = -1;
+                for (int i = 0; i < binStr.Length; ++i)
+                {
+                    if (binStr[i] == '0')
+                        pos = i;
+                }
 
+                // 나머지에서 0이 있으면
+                if (pos != -1)
+                {
                     // 끝0 뒤에 110 적용
-                    var frontStr = binStr.Substring(0, pos+1);
-                    var leftStr = binStr.Substring(pos + 1);
+                    frontStr = binStr.Substring(0, pos+1);
+                    leftStr = binStr.Substring(pos + 1);
                     answer.Add(frontStr + middleStr + leftStr);
                 }
                 else
-                {   // 1만 있으므로 맨 앞에 적용
+                {   // 1로만 구성되어 있으므로 맨 앞에 적용
                     answer.Add(middleStr + binStr);
                 }
             }
