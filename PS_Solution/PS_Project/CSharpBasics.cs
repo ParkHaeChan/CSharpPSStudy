@@ -5,7 +5,7 @@ using System.Text;
 
 namespace PS_Project
 {
-    class PS_0 : PS
+    class PS_Basic0 : PS
     {
         public override void Run()
         {
@@ -13,7 +13,7 @@ namespace PS_Project
         }
     }
 
-    class PS_1 : PS
+    class PS_Basic1 : PS
     {
         // 정렬: using System.Linq; 사용
 
@@ -64,6 +64,71 @@ namespace PS_Project
             var temp = new List<string>();
             cls.ForEach(a => temp.Add(a._name));
             Console.WriteLine(string.Join(", ", temp.OrderBy(a=>a)));
+        }
+    }
+
+    class PS_Basic2 : PS
+    {
+        // BFS 구현
+        // 문제: https://school.programmers.co.kr/learn/courses/30/lessons/1844?language=csharp
+
+        // 입력: 2차원 배열 그래프
+        int[,] maps = { { 1, 0, 1, 1, 1 },{1, 0, 1, 0, 1},{1, 0, 1, 1, 1},{1, 1, 1, 0, 1},{0, 0, 0, 0, 1}};     // 11
+        //int[,] maps = { { 1, 0, 1, 1, 1 },{1, 0, 1, 0, 1},{1, 0, 1, 1, 1},{1, 1, 1, 0, 0},{0, 0, 0, 0, 1}};   // -1
+
+        public bool InRange(Tuple<int, int> pos, int R, int C)
+        {
+            if (0 <= pos.Item1 && pos.Item1 < R && 0 <= pos.Item2 && pos.Item2 < C)
+                return true;
+            return false;
+        }
+
+        public int solution(int[,] maps)
+        {
+            // c++의 pair 대신 C#에서는 KeyValuePair 나 Tuple을 사용하는데, 할당 속도를 제외하고는 Tuple이 성능이 더 좋다.
+            // 그래프 순회에서는 할당도 자주하지만,  접근도 자주하므로 일단 tuple을 사용해본다.
+            Queue<Tuple<Tuple<int,int>, int>> bfsQ = new Queue<Tuple<Tuple<int,int>, int>>();
+
+            int R = maps.GetLength(0);
+            int C = maps.GetLength(1);
+
+            bool[,] visited = new bool[R, C];
+
+            var startPos = new Tuple<int, int>(0, 0);
+            var endPos = new Tuple<int, int>(R-1, C-1);
+
+            Tuple<int, int>[] dirs = { new Tuple<int,int>(0, -1), new Tuple<int, int>(0, 1), new Tuple<int, int>(-1, 0), new Tuple<int, int>(1, 0)};    // LRUD
+
+            bfsQ.Enqueue(new Tuple<Tuple<int,int>, int>(startPos, 1));
+            visited[0,0] = true;
+
+            while(bfsQ.Count > 0)
+            {
+                var cur = bfsQ.Dequeue();
+
+                if( cur.Item1.Item1 == endPos.Item1 && cur.Item1.Item2 == endPos.Item2)
+                    return cur.Item2;
+
+                foreach(var dir in dirs)
+                {
+                    var next = new Tuple<int, int>(cur.Item1.Item1 + dir.Item1, cur.Item1.Item2 + dir.Item2);
+                    if(InRange(next, R, C) && !visited[next.Item1, next.Item2])
+                    {
+                        visited[next.Item1, next.Item2] = true;
+                        if (maps[next.Item1, next.Item2] == 0)   // 벽
+                            continue;
+                        bfsQ.Enqueue(new Tuple<Tuple<int, int>, int>(next, cur.Item2+1));
+                    }
+                }
+            }
+
+            return -1;
+        }
+
+        public override void Run()
+        {
+            var answer = solution(maps);
+            Console.WriteLine("최단 거리: " + answer);
         }
     }
 }

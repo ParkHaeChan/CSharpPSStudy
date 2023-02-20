@@ -15,9 +15,10 @@ namespace PS_Project
 
         public virtual void Run() { }
 
-        public static PS GetTestProgram(int index)
+        public static PS GetTestProgram(int index, bool isBasic = false)
         {
-            string key = "PS_Project.PS_" + index;
+            string basic = isBasic ? "Basic" : "";
+            string key = "PS_Project.PS_" + basic + index;
             if (!testDict.ContainsKey(key))
             {
                 Console.WriteLine("해당하는 key값이 없습니다");
@@ -35,15 +36,17 @@ namespace PS_Project
 
     class Program
     {
-        const int TESTINDEX = 4;    // 0번: HelloWorld 출력 테스트
+        const int TESTINDEX = 2;    // 0번: HelloWorld 출력 테스트
         const int TESTCOUNT = 1000;
+        const bool isBasic = true;
 
         static void Main(string[] args)
         {
             // 테스트 할 class 세팅 (많아지면 인덱스 범위 조절 필요함)
             for(int i=0; i<=TESTCOUNT; ++i)
             {
-                var type = Type.GetType("PS_Project.PS_" + i);
+                string basic = isBasic ? "Basic" : "";
+                var type = Type.GetType("PS_Project.PS_" + basic + i);
                 if (type != null)
                 {
                     var instance = Activator.CreateInstance(type) as PS;
@@ -51,7 +54,7 @@ namespace PS_Project
             }
 
             // 테스트 수행할 Class index를 입력
-            var test = PS.GetTestProgram(TESTINDEX);
+            var test = PS.GetTestProgram(TESTINDEX, isBasic);
 
             test.Run();
         }
