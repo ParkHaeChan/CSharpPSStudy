@@ -76,7 +76,7 @@ namespace PS_Project
         int[,] maps = { { 1, 0, 1, 1, 1 },{1, 0, 1, 0, 1},{1, 0, 1, 1, 1},{1, 1, 1, 0, 1},{0, 0, 0, 0, 1}};     // 11
         //int[,] maps = { { 1, 0, 1, 1, 1 },{1, 0, 1, 0, 1},{1, 0, 1, 1, 1},{1, 1, 1, 0, 0},{0, 0, 0, 0, 1}};   // -1
 
-        public bool InRange(Tuple<int, int> pos, int R, int C)
+        public bool InRange((int, int) pos, int R, int C)
         {
             if (0 <= pos.Item1 && pos.Item1 < R && 0 <= pos.Item2 && pos.Item2 < C)
                 return true;
@@ -87,37 +87,41 @@ namespace PS_Project
         {
             // c++의 pair 대신 C#에서는 KeyValuePair 나 Tuple을 사용하는데, 할당 속도를 제외하고는 Tuple이 성능이 더 좋다.
             // 그래프 순회에서는 할당도 자주하지만,  접근도 자주하므로 일단 tuple을 사용해본다.
-            Queue<Tuple<Tuple<int,int>, int>> bfsQ = new Queue<Tuple<Tuple<int,int>, int>>();
+            // 결과: 통과는 했는데 코드가 영 좋지 못한 느낌이다.
+            // 시도2: Tuple 중첩하지 않고 단순한 2쌍 튜플은 () 표기법 사용
+            Queue<Tuple<int, int, int>> bfsQ = new Queue<Tuple<int, int, int>>();
 
             int R = maps.GetLength(0);
             int C = maps.GetLength(1);
 
-            bool[,] visited = new bool[R, C];
+            bool[,] visited = new bool[R, C];   // C++ 처럼 [][]로 쓰지 않음에 주의
 
-            var startPos = new Tuple<int, int>(0, 0);
-            var endPos = new Tuple<int, int>(R-1, C-1);
+            // 튜플 초기화: () 표기법 사용
+            var startPos = (0, 0);
+            var endPos = (R-1, C-1);
 
-            Tuple<int, int>[] dirs = { new Tuple<int,int>(0, -1), new Tuple<int, int>(0, 1), new Tuple<int, int>(-1, 0), new Tuple<int, int>(1, 0)};    // LRUD
+            // 다수 튜플 초기화: List와 ()표기법로 가능함
+            var dirs = new List<(int,int)>{ (0, -1), (0, 1), (-1, 0), (1, 0) };    // LRUD
 
-            bfsQ.Enqueue(new Tuple<Tuple<int,int>, int>(startPos, 1));
+            bfsQ.Enqueue(new Tuple<int, int, int>(startPos.Item1, startPos.Item2, 1));
             visited[0,0] = true;
 
             while(bfsQ.Count > 0)
             {
                 var cur = bfsQ.Dequeue();
 
-                if( cur.Item1.Item1 == endPos.Item1 && cur.Item1.Item2 == endPos.Item2)
-                    return cur.Item2;
+                if( cur.Item1 == endPos.Item1 && cur.Item2 == endPos.Item2)
+                    return cur.Item3;
 
                 foreach(var dir in dirs)
                 {
-                    var next = new Tuple<int, int>(cur.Item1.Item1 + dir.Item1, cur.Item1.Item2 + dir.Item2);
+                    var next = (cur.Item1 + dir.Item1, cur.Item2 + dir.Item2);
                     if(InRange(next, R, C) && !visited[next.Item1, next.Item2])
                     {
                         visited[next.Item1, next.Item2] = true;
                         if (maps[next.Item1, next.Item2] == 0)   // 벽
                             continue;
-                        bfsQ.Enqueue(new Tuple<Tuple<int, int>, int>(next, cur.Item2+1));
+                        bfsQ.Enqueue(new Tuple<int, int, int>(next.Item1, next.Item2, cur.Item3+1));
                     }
                 }
             }
