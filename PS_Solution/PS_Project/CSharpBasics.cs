@@ -89,7 +89,7 @@ namespace PS_Project
             // 그래프 순회에서는 할당도 자주하지만,  접근도 자주하므로 일단 tuple을 사용해본다.
             // 결과: 통과는 했는데 코드가 영 좋지 못한 느낌이다.
             // 시도2: Tuple 중첩하지 않고 단순한 2쌍 튜플은 () 표기법 사용
-            Queue<Tuple<int, int, int>> bfsQ = new Queue<Tuple<int, int, int>>();
+            Queue<Tuple<int, int, int>> bfsQ = new Queue<Tuple<int, int, int>>();   // (position: (row, col) + 현재까지 몇 번에 거쳐 왔는지 -> int, int, int)
 
             int R = maps.GetLength(0);
             int C = maps.GetLength(1);
